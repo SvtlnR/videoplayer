@@ -5,8 +5,9 @@
       muted: false
     }, options);
     return this.each(function() {
-      var iconPlayBtn = "&#9658";
       var video = this;
+      var iconPlayBtn = "&#9658";
+      var originalWidth=video.width
       if (!settings.autoplay) {
         pauseVideo(video);
       } else {
@@ -30,12 +31,19 @@
         "<div class=\"sound\"><img class=\"soundIcon\" src=\"" + iconSound + "\"></div>" +
         "<input type=\"range\" step=\"0.1\" min=\"0\" max=\"1\" value=\"" + video.volume + "\" class=\"volume\" />" +
         "</div>");
+
+      var controls_videoplayer = $(video).next()[0];
+      $(controls_videoplayer).width(video.width);
       var btn = $(video).next().find(".playBtn");
       var timer = $(video).next().find(".timer");
       var durationDiv = $(video).next().find(".duration");
       var rewind = $(video).next().find(".rewind");
       var sound = $(video).next().find(".sound");
       var volume = $(video).next().find(".volume");
+      var resize=$(video).next().find(".resize");
+      var stopBtn = $(video).next().find(".stopBtn");
+      
+      
       $(btn).click(function() {
         if (video.paused) {
           playVideo(video);
@@ -43,6 +51,8 @@
           pauseVideo(video);
         }
       });
+
+
       $(sound).click(function() {
         if (video.volume == 0) {
           setVolume(1);
@@ -50,20 +60,33 @@
           setVolume(0);
         }
       });
+
+
       $(video).on(
         "timeupdate",
         function(event) {
           onTrackedVideoFrame(this.currentTime, this.duration);
         });
+
+
       $(rewind).on("change", function(event) {
-        var newTime = $(rewind).val() * dur / 100;
+        var newTime = $(rewind).val() * video.duration / 100;
         video.currentTime = newTime;
         playVideo(video);
-        onTrackedVideoFrame(newTime, dur);
+        onTrackedVideoFrame(newTime, video.duration);
       });
+
+
       $(volume).on("change", function(event) {
         setVolume(volume.val());
       });
+
+
+      $(stopBtn).click(function() {
+        stopVideo(video);
+      });
+
+
 
       function onTrackedVideoFrame(currentTime, duration) {
         cur_time = currentTime / 60;
@@ -75,19 +98,22 @@
         if (currentsec < 10) {
           currentsec = "0" + currentsec;
         }
+        if(currentTime==duration){
+          stopVideo(video);
+        }
         $(timer).text(currentmin + ":" + currentsec);
-        dur = duration;
         var durationInMin = duration / 60;
         var durationMin = Math.trunc(durationInMin);
         var durationSec = Math.trunc((durationInMin - durationMin) * 100);
         $(durationDiv).text(durationMin + ":" + durationSec);
         $(rewind).val(currentTime * 100 / duration);
       }
-      var stopBtn = $(video).next().find(".stopBtn");
-      $(stopBtn).click(function() {
-        pauseVideo(video);
+
+      function stopVideo(curVideo){
+        pauseVideo(curVideo);
         video.currentTime = 0;
-      })
+      }
+
 
       function pauseVideo(curVideo) {
         curVideo.pause();

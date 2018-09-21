@@ -7,19 +7,19 @@
 	color: #ffffff;
 	width:100%;
 }
-.soundIcon{
+.soundIcon, .resizeIcon{
 	width: 80%;
 }
-.playBtn, .stopBtn,.sound{
+.playBtn, .stopBtn,.sound,.resize{
 	text-align: center;
 	width: 20px;
 	display: inline-block;
-	padding: 3px;
+	padding: 0.5%;
 	cursor: pointer;
 }
 .sound{
-	margin-top: 8px;
-	margin-left:7px;
+	margin-top: 2%;
+	margin-left:0.5%;
 }
 .volume,.rewind{
 vertical-align: middle;
