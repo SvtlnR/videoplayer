@@ -7,7 +7,6 @@
     return this.each(function() {
       var video = this;
       var iconPlayBtn = "&#9658";
-      var originalWidth=video.width
       if (!settings.autoplay) {
         pauseVideo(video);
       } else {
@@ -40,10 +39,10 @@
       var rewind = $(video).next().find(".rewind");
       var sound = $(video).next().find(".sound");
       var volume = $(video).next().find(".volume");
-      var resize=$(video).next().find(".resize");
+      var resize = $(video).next().find(".resize");
       var stopBtn = $(video).next().find(".stopBtn");
-      
-      
+
+
       $(btn).click(function() {
         if (video.paused) {
           playVideo(video);
@@ -65,15 +64,16 @@
       $(video).on(
         "timeupdate",
         function(event) {
+
           onTrackedVideoFrame(this.currentTime, this.duration);
         });
 
 
-      $(rewind).on("change", function(event) {
-        var newTime = $(rewind).val() * video.duration / 100;
-        video.currentTime = newTime;
-        playVideo(video);
-        onTrackedVideoFrame(newTime, video.duration);
+      $(rewind).on("input", function(event) {
+          pauseVideo(video);
+          var newTime = $(rewind).val() * video.duration / 100;
+          video.currentTime = newTime;
+          playVideo(video);
       });
 
 
@@ -89,27 +89,31 @@
 
 
       function onTrackedVideoFrame(currentTime, duration) {
-        cur_time = currentTime / 60;
-        var currentmin = Math.trunc(cur_time);
-        if (currentmin < 10) {
-          currentmin = "0" + currentmin;
+        var currentmin = Math.trunc(currentTime / 60);
+        var currentsec = Math.trunc(currentTime - currentmin * 60);
+        if (currentTime == duration) {
+          stopVideo(video);
         }
-        var currentsec = Math.trunc((cur_time - currentmin) * 100);
         if (currentsec < 10) {
           currentsec = "0" + currentsec;
         }
-        if(currentTime==duration){
-          stopVideo(video);
+        if (currentmin < 10) {
+          currentmin = "0" + currentmin;
         }
         $(timer).text(currentmin + ":" + currentsec);
-        var durationInMin = duration / 60;
-        var durationMin = Math.trunc(durationInMin);
-        var durationSec = Math.trunc((durationInMin - durationMin) * 100);
+        var durationMin = Math.trunc(duration / 60);
+        var durationSec = Math.trunc(duration - durationMin * 60);
+        if (durationMin < 10) {
+          durationMin = "0" + durationMin;
+        }
+        if (durationSec < 10) {
+          durationSec = "0" + durationSec;
+        }
         $(durationDiv).text(durationMin + ":" + durationSec);
         $(rewind).val(currentTime * 100 / duration);
       }
 
-      function stopVideo(curVideo){
+      function stopVideo(curVideo) {
         pauseVideo(curVideo);
         video.currentTime = 0;
       }
