@@ -6,6 +6,16 @@
 	<link rel="stylesheet" type="text/css" href="./videoplayer_plugin/videoplayer.css">
 	<title></title>
 </head>
+<style type="text/css">
+	.firstCol{
+		width: 500px;
+		float:left;
+	}
+	.secondCol{
+		width: 400px;
+		float:left;
+	}
+</style>
 <body>
  <video width="500" class="videoplayer" id="first">
     <source src="focus.mp4">
@@ -13,6 +23,15 @@
    <video width="400" class="videoplayer" id="second">
     <source src="focus.mp4">
    </video>
+   <div class="firstCol">
+   <ul>Using .videoPlayer()
+   	<li>Video starts playing after clicking on play button;</li>
+   	<li>maximum volume.</li>
+   	</ul></div>
+   <div class="secondCol">
+   <ul>Using .videoPlayer({autoplay:true, muted:true})
+   	<li>Video starts playing automatically as soon as page is loaded;</li>
+   <li> video is muted.</li></ul></div>
 <script src="./videoplayer_plugin/videoplayer.js"></script>
 <script src="script.js"></script>
 </body>

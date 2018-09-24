@@ -30,7 +30,6 @@
         "<div class=\"sound\"><img class=\"soundIcon\" src=\"" + iconSound + "\"></div>" +
         "<input type=\"range\" step=\"0.1\" min=\"0\" max=\"1\" value=\"" + video.volume + "\" class=\"volume\" />" +
         "</div>");
-
       var controls_videoplayer = $(video).next()[0];
       $(controls_videoplayer).width(video.width);
       var btn = $(video).next().find(".playBtn");
@@ -41,8 +40,6 @@
       var volume = $(video).next().find(".volume");
       var resize = $(video).next().find(".resize");
       var stopBtn = $(video).next().find(".stopBtn");
-
-
       $(btn).click(function() {
         if (video.paused) {
           playVideo(video);
@@ -50,8 +47,6 @@
           pauseVideo(video);
         }
       });
-
-
       $(sound).click(function() {
         if (video.volume == 0) {
           setVolume(1);
@@ -59,34 +54,24 @@
           setVolume(0);
         }
       });
-
-
       $(video).on(
         "timeupdate",
         function(event) {
 
           onTrackedVideoFrame(this.currentTime, this.duration);
         });
-
-
       $(rewind).on("input", function(event) {
-          pauseVideo(video);
-          var newTime = $(rewind).val() * video.duration / 100;
-          video.currentTime = newTime;
-          playVideo(video);
+        pauseVideo(video);
+        var newTime = $(rewind).val() * video.duration / 100;
+        video.currentTime = newTime;
+        playVideo(video);
       });
-
-
       $(volume).on("change", function(event) {
         setVolume(volume.val());
       });
-
-
       $(stopBtn).click(function() {
         stopVideo(video);
       });
-
-
 
       function onTrackedVideoFrame(currentTime, duration) {
         var currentmin = Math.trunc(currentTime / 60);
@@ -118,7 +103,6 @@
         video.currentTime = 0;
       }
 
-
       function pauseVideo(curVideo) {
         curVideo.pause();
         iconPlayBtn = "&#9658";
@@ -144,5 +128,4 @@
       }
     });
   };
-
 })(jQuery);
