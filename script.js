@@ -1,2 +1,5 @@
 $("#first").videoPlayer();
-$("#second").videoPlayer({autoplay:true, muted:true});
+$("#second").videoPlayer({
+	autoplay: true,
+	muted: true
+});
